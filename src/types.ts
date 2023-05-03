@@ -4,6 +4,7 @@ export type CallbackType = (data?: any) => void
 export interface LayoutProps extends WebViewProps {
   handlers?: { [key: string]: any }
   videoId: string
+  videoPrivate?: boolean
   params?: string
   reference?: string
 }
