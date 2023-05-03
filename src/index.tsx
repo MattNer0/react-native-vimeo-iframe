@@ -81,7 +81,7 @@ export const Vimeo: React.FC<LayoutProps> = ({
       ref={webRef as any}
       onMessage={onBridgeMessage}
       scrollEnabled={false}
-      injectedJavaScript={template(videoId, videoPrivate, url)}
+      injectedJavaScript={template(videoId, Boolean(videoPrivate), url)}
       mediaPlaybackRequiresUserAction={!autoPlay}
       {...otherProps}
     />
