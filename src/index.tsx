@@ -46,8 +46,8 @@ export const Vimeo: React.FC<LayoutProps> = ({
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
       .loader {
-        border: 12px solid #333;
-        border-top: 12px solid #f3f3f3;
+        border: 10px solid #333;
+        border-top: 10px solid #f3f3f3;
         border-radius: 50%;
         width: 100px;
         height: 100px;
