@@ -5,6 +5,7 @@ export interface LayoutProps extends WebViewProps {
   handlers?: { [key: string]: any }
   videoId: string
   videoPrivate?: boolean
+  videoUrl?: string
   params?: string
   reference?: string
 }

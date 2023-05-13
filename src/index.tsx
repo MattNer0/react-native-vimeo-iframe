@@ -8,6 +8,7 @@ export const Vimeo: React.FC<LayoutProps> = ({
   handlers: handlersArr,
   videoId,
   videoPrivate,
+  videoUrl,
   params,
   reference,
   ...otherProps
@@ -18,7 +19,6 @@ export const Vimeo: React.FC<LayoutProps> = ({
     : `https://player.vimeo.com/video/${videoId}`
 
   const autoPlay = params?.includes('autoplay=1')
-
   const handlers: any = {}
 
   const registerHandlers = useCallback(() => {
@@ -41,48 +41,14 @@ export const Vimeo: React.FC<LayoutProps> = ({
     [handlers]
   )
 
-  const page: string = `<html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-      html, body {
-        margin: 0;
-        padding: 0;
-        background-color: #000;
-      }
-      
-      .loader {
-        border: 10px solid #333;
-        border-top: 10px solid #f3f3f3;
-        border-radius: 50%;
-        width: 100px;
-        height: 100px;
-        animation: spin 1s linear infinite;
-      }
-
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
-    </style>
-  </head>
-  <body style="position:relative;">
-   <div id="container" style="position:relative;opacity:0.0;width:100%;height:100%;">
-      <iframe src="${url}" frameborder="0" allow="autoplay; fullscreen" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
-    </div>
-    <div id="absolute" style="position:absolute;top:0;right:0;left:0;bottom:0;display:flex;align-items:center;justify-content:center;">
-      <div class="loader"></div>
-    </div>
-    <script src="https://player.vimeo.com/api/player.js"></script>
-  </body>
-</html>`
-
   return (
     <WebView
       allowsFullscreenVideo={true}
       originWhitelist={['*']}
-      source={{ 'html': page, 'headers': { Referer: reference } }}
-      //source={{ uri: url, headers: { Referer: reference } }}
+      source={{
+        'uri': videoUrl ? videoUrl : url,
+        'headers': { Referer: reference }
+      }}
       javaScriptEnabled={true}
       ref={webRef as any}
       onMessage={onBridgeMessage}
