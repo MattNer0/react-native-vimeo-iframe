@@ -32,6 +32,7 @@ export const PlayerEvents = [
   'suspend',
   'timeupdate',
   'volumechange',
+  'error',
 ] as const
 
 export type PlayerEvent = typeof PlayerEvents[number]

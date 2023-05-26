@@ -41,11 +41,16 @@ const addListeners = () => {
     video.on('suspend', (e) => sendEvent('suspend', e));
     video.on('volumechange', (e) => sendEvent('volumechange', e));
     video.on('waiting', (e) => sendEvent('waiting', e));
+    video.on('error', (e) => sendEvent('error', e));
 
     //If the video privacy settings are "Private", you will need to provide the full video URL as a url argument and include the h parameter
     video.loadVideo(${videoPrivate ? url : videoId}).then(function() {
       document.getElementById("container").style.opacity = "1.0";
       document.getElementById("absolute").style.display = "none";
+    }).catch(function(err) {
+      document.getElementById("container").style.opacity = "1.0";
+      document.getElementById("absolute").style.display = "none";
+      sendEvent('error', err);
     })
   }
 };
