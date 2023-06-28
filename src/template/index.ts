@@ -22,12 +22,12 @@ const addListeners = () => {
       const percent = Math.round((e.target.currentTime / e.target.duration)*100).toFixed();
       sendEvent('timeupdate', { currentTime: e.target.currentTime, duration: e.target.duration, percent });
     });
-    video.on('audioprocess', (e) => sendEvent('audioprocess', e));
-    video.on('canplay', (e) => sendEvent('canplay', e));
-    video.on('canplaythrough', (e) => sendEvent('canplaythrough', e));
-    video.on('complete', (e) => sendEvent('complete', e));
+    //video.on('audioprocess', (e) => sendEvent('audioprocess', e));
+    //video.on('canplay', (e) => sendEvent('canplay', e));
+    //video.on('canplaythrough', (e) => sendEvent('canplaythrough', e));
+    //video.on('complete', (e) => sendEvent('complete', e));
     video.on('durationchange', (e) => sendEvent('durationchange', e));
-    video.on('emptied', (e) => sendEvent('emptied', e));
+    //video.on('emptied', (e) => sendEvent('emptied', e));
     video.on('ended', (e) => sendEvent('ended', e));
     video.on('loadeddata', (e) => sendEvent('loadeddata', e));
     video.on('loadedmetadata', (e) => sendEvent('loadedmetadata', e));
@@ -37,8 +37,8 @@ const addListeners = () => {
     video.on('ratechange', (e) => sendEvent('ratechange', e));
     video.on('seeked', (e) => sendEvent('seeked', e));
     video.on('seeking', (e) => sendEvent('seeking', e));
-    video.on('stalled', (e) => sendEvent('stalled', e));
-    video.on('suspend', (e) => sendEvent('suspend', e));
+    //video.on('stalled', (e) => sendEvent('stalled', e));
+    //video.on('suspend', (e) => sendEvent('suspend', e));
     video.on('volumechange', (e) => sendEvent('volumechange', e));
     video.on('waiting', (e) => sendEvent('waiting', e));
     video.on('error', (e) => sendEvent('error', e));
