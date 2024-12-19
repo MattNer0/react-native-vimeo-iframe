@@ -7,7 +7,9 @@ export interface LayoutProps extends WebViewProps {
   videoPrivate?: boolean
   videoUrl?: string
   params?: string
+  autoplay?: boolean
   reference?: string
+  allowsPictureInPictureMediaPlayback?: boolean
 }
 
 export const PlayerEvents = [

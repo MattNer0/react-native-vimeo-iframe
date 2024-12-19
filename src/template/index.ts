@@ -8,16 +8,8 @@ const sendEvent = (name, data) => {
   window.ReactNativeWebView.postMessage(JSON.stringify({ name, data }));
 };
 
-const addListeners = () => {
-  const iframe = document.querySelector('iframe');
-  const video = new Vimeo.Player(iframe);
-  
-  window.addEventListener("fullscreenchange", (e) => {
-    const orientation = getOrientation();
-    sendEvent('fullscreenchange', { e, orientation });
-  }, false);
-  
-  if(video) {
+const addListenersToPlayer = (video) => {
+  if (video) {
     video.on("timeupdate", (e) => {
       const percent = Math.round((e.target.currentTime / e.target.duration)*100).toFixed();
       sendEvent('timeupdate', { currentTime: e.target.currentTime, duration: e.target.duration, percent });
@@ -42,19 +34,40 @@ const addListeners = () => {
     video.on('volumechange', (e) => sendEvent('volumechange', e));
     video.on('waiting', (e) => sendEvent('waiting', e));
     video.on('error', (e) => sendEvent('error', e));
+  }
+}
 
-    //If the video privacy settings are "Private", you will need to provide the full video URL as a url argument and include the h parameter
-    video.loadVideo(${videoPrivate ? url : videoId}).then(function() {
-      document.getElementById("container").style.opacity = "1.0";
-      document.getElementById("absolute").style.display = "none";
-    }).catch(function(err) {
-      document.getElementById("container").style.opacity = "1.0";
-      document.getElementById("absolute").style.display = "none";
-      sendEvent('error', err);
-    })
+const addListeners = () => {
+  const iframe = document.querySelector('iframe');
+  if (iframe) {
+    window.addEventListener("fullscreenchange", (e) => {
+      const orientation = getOrientation();
+      sendEvent('fullscreenchange', { e, orientation });
+    }, false);
+
+    if (typeof player !== 'undefined') {
+      addListenersToPlayer(player);
+    } else {
+      const video = new Vimeo.Player(iframe);
+      addListenersToPlayer(video);
+    }
+  } else {
+    setTimeout(function(){addListeners()}, 300);
   }
 };
 
-setTimeout(function(){addListeners()}, 300);
+setTimeout(function(){addListeners()}, 500);
 true;
 `
+
+/*
+  //If the video privacy settings are "Private", you will need to provide the full video URL as a url argument and include the h parameter
+  video.loadVideo(${videoPrivate ? url : videoId}).then(function() {
+    document.getElementById("container").style.opacity = "1.0";
+    document.getElementById("absolute").style.display = "none";
+  }).catch(function(err) {
+    document.getElementById("container").style.opacity = "1.0";
+    document.getElementById("absolute").style.display = "none";
+    sendEvent('error', err);
+  })
+*/

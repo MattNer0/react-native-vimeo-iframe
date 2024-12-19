@@ -10,7 +10,9 @@ export const Vimeo: React.FC<LayoutProps> = ({
   videoPrivate,
   videoUrl,
   params,
+  autoplay,
   reference,
+  allowsPictureInPictureMediaPlayback,
   ...otherProps
 }) => {
   const webRef = useRef<WebView>()
@@ -18,7 +20,7 @@ export const Vimeo: React.FC<LayoutProps> = ({
     ? `https://player.vimeo.com/video/${videoId}?${encodeURIComponent(params)}`
     : `https://player.vimeo.com/video/${videoId}`
 
-  const autoPlay = params?.includes('autoplay=1')
+  const webviewAutoPlay = autoplay || params?.includes('autoplay=1')
   const handlers: any = {}
 
   const registerHandlers = useCallback(() => {
@@ -54,7 +56,8 @@ export const Vimeo: React.FC<LayoutProps> = ({
       onMessage={onBridgeMessage}
       scrollEnabled={false}
       injectedJavaScript={template(videoId, Boolean(videoPrivate), url)}
-      mediaPlaybackRequiresUserAction={!autoPlay}
+      mediaPlaybackRequiresUserAction={!webviewAutoPlay}
+      allowsPictureInPictureMediaPlayback={typeof allowsPictureInPictureMediaPlayback === 'boolean' ? allowsPictureInPictureMediaPlayback : true}
       {...otherProps}
     />
   )
