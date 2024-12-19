@@ -1,4 +1,4 @@
-export default (videoId: string, videoPrivate: boolean, url: string) => `
+export default (videoId, videoPrivate, url) => `
 const getOrientation = () => {
   const orientation = document.fullscreenElement  ? 'landscape' : 'portrait';
   return orientation;

@@ -2,9 +2,33 @@ import React, { useCallback, useRef } from 'react'
 import { WebView } from 'react-native-webview'
 
 import template from './template'
-import { LayoutProps, PlayerEvents } from './types'
 
-export const Vimeo: React.FC<LayoutProps> = ({
+PlayerEvents = [
+  'controlschange',
+  'fullscreenchange',
+  'audioprocess',
+  'canplay',
+  'canplaythrough',
+  'complete',
+  'durationchange',
+  'emptied',
+  'ended',
+  'loadeddata',
+  'loadedmetadata',
+  'pause',
+  'play',
+  'playing',
+  'ratechange',
+  'seeked',
+  'seeking',
+  'stalled',
+  'suspend',
+  'timeupdate',
+  'volumechange',
+  'error',
+]
+
+export const Vimeo = ({
   handlers: handlersArr,
   videoId,
   videoPrivate,
@@ -15,13 +39,11 @@ export const Vimeo: React.FC<LayoutProps> = ({
   allowsPictureInPictureMediaPlayback,
   ...otherProps
 }) => {
-  const webRef = useRef<WebView>()
-  const url: string = params
-    ? `https://player.vimeo.com/video/${videoId}?${encodeURIComponent(params)}`
-    : `https://player.vimeo.com/video/${videoId}`
+  const webRef = useRef()
+  const url = params ? `https://player.vimeo.com/video/${videoId}?${encodeURIComponent(params)}` : `https://player.vimeo.com/video/${videoId}`
 
   const webviewAutoPlay = autoplay || params?.includes('autoplay=1')
-  const handlers: any = {}
+  const handlers = {}
 
   const registerHandlers = useCallback(() => {
     PlayerEvents.forEach((name) => {
@@ -32,11 +54,8 @@ export const Vimeo: React.FC<LayoutProps> = ({
   registerHandlers()
 
   const onBridgeMessage = useCallback(
-    (event: any) => {
-      const payload: { name: string; data: any } = JSON.parse(
-        event.nativeEvent.data
-      )
-
+    (event) => {
+      const payload = JSON.parse(event.nativeEvent.data)
       let bridgeMessageHandler = handlers[payload?.name]
       if (bridgeMessageHandler) bridgeMessageHandler(payload?.data)
     },
@@ -52,7 +71,7 @@ export const Vimeo: React.FC<LayoutProps> = ({
         'headers': { Referer: reference }
       }}
       javaScriptEnabled={true}
-      ref={webRef as any}
+      ref={webRef}
       onMessage={onBridgeMessage}
       scrollEnabled={false}
       injectedJavaScript={template(videoId, Boolean(videoPrivate), url)}
